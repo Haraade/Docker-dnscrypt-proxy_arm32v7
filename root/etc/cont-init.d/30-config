@@ -1,1 +1,26 @@
+#!/usr/bin/with-contenv bash
 
+# make our folders
+mkdir -p \
+    /var/log/dnscrypt-proxy \
+    /var/run/dnscrypt-proxy
+
+# copy default config if not present in /config
+[[ ! -e /config/dnscrypt-proxy.toml ]] && \
+    cp /defaults/dnscrypt-proxy.toml /config
+
+# copy config from /config to root
+cp /config/dnscrypt-proxy.toml /dnscrypt-proxy.toml
+
+# permissions
+chown -R dnsx:dnsx \
+    /config \
+    /var/log/dnscrypt-proxy \
+    /var/run/dnscrypt-proxy \
+    /dnscrypt-proxy.toml
+
+chmod 700 /config
+chmod 600 \
+    /config/* \
+    /var/log/dnscrypt-proxy \
+    /dnscrypt-proxy.toml
