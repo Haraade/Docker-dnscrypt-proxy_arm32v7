@@ -2,7 +2,6 @@
 
 # make our folders
 mkdir -p \
-    /var/log/dnscrypt-proxy \
     /var/run/dnscrypt-proxy
 
 # copy default config if not present in /config
@@ -15,12 +14,10 @@ cp /config/dnscrypt-proxy.toml /dnscrypt-proxy.toml
 # permissions
 chown -R dnsx:dnsx \
     /config \
-    /var/log/dnscrypt-proxy \
     /var/run/dnscrypt-proxy \
     /dnscrypt-proxy.toml
 
 chmod 700 /config
 chmod 600 \
     /config/* \
-    /var/log/dnscrypt-proxy \
     /dnscrypt-proxy.toml
