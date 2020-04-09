@@ -1,1 +1,23 @@
+#!/usr/bin/with-contenv bash
 
+PUID=${PUID:-911}
+PGID=${PGID:-911}
+
+groupmod -o -g "$PGID" dnsx
+usermod -o -u "$PUID" dnsx
+
+echo '
+-------------------------------------
+
+*** DNSCRYPT-PROXY-2.0 ***
+
+-------------------------------------
+GID/UID
+-------------------------------------'
+echo "
+User uid:    $(id -u dnsx)
+User gid:    $(id -g dnsx)
+-------------------------------------
+"
+chown dnsx:dnsx /config
+chown dnsx:dnsx /defaults
