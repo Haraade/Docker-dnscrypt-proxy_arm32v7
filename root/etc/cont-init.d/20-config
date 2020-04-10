@@ -1,6 +1,6 @@
 #!/usr/bin/with-contenv bash
 
-# make our folders
+# make folders
 mkdir -p \
     /var/run/dnscrypt-proxy
 
