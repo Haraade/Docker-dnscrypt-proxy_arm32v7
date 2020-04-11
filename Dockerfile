@@ -1,4 +1,4 @@
-FROM arm32v7/golang:alpine as dnscrypt-proxy-builder
+FROM arm32v7/golang:alpine as Dnscrypt-proxy-builder
 
 RUN apk --no-cache --update upgrade && \ 
     apk add --no-cache git && \ 
@@ -51,8 +51,8 @@ RUN \
  sed -i -e 's/^root::/root:!:/' /root-out/etc/shadow
 
 # Runtime stage
-FROM scratch as isobase
-COPY --from=dnscrypt-proxy-builder /dnscrypt-proxy/linux-arm/ /usr/bin/
+FROM scratch as Dnscrypt-proxy
+COPY --from=Dnscrypt-proxy-builder /dnscrypt-proxy/linux-arm/ /usr/bin/
 COPY --from=rootfs-stage /root-out/ /
 
 # set version for s6 overlay
@@ -77,21 +77,20 @@ RUN \
 	shadow \
 	tzdata \
         libcap && \
- echo "------- add s6 overlay -------" && \
+ echo "------- s6 overlay -------" && \
  curl -o \
  /tmp/s6-overlay.tar.gz -L \
 	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}.tar.gz" && \
  tar xfz \
 	/tmp/s6-overlay.tar.gz -C / && \
- echo "------- create dnsx user and make our folders -------" && \
+ echo "------- create dnsx user and make folders -------" && \
  groupmod -g 1000 users && \
  useradd -u 911 -U -d /config -s /bin/false dnsx && \
  usermod -G users dnsx && \
  mkdir -p \
-	/app \
 	/config \
 	/defaults && \
- echo "------- add qemu -------" && \
+ echo "------- qemu -------" && \
  curl -o \
  /usr/bin/qemu-arm-static -L \
 	"https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static" && \
