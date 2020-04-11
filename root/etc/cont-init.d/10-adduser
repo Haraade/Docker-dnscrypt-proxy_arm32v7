@@ -9,7 +9,7 @@ usermod -o -u "$PUID" dnsx
 echo '
 =====================================
 
-<<<< DNSCRYPT-PROXY >>>>
+     <<<< DNSCRYPT-PROXY >>>>
 
 =====================================
 GID/UID
