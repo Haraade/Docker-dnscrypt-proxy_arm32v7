@@ -18,7 +18,7 @@ go build -ldflags="-s -w" -o $GOPATH/linux-arm/dnscrypt-proxy
 FROM alpine:3.10 as rootfs-stage
 
 # environment
-ENV REL=v3.11
+ENV REL=v3.12
 ENV ARCH=armv7
 ENV MIRROR=http://dl-cdn.alpinelinux.org/alpine
 ENV PACKAGES=alpine-baselayout,\
@@ -56,7 +56,7 @@ COPY --from=Dnscrypt-proxy-builder /dnscrypt-proxy/linux-arm/ /usr/bin/
 COPY --from=rootfs-stage /root-out/ /
 
 # set version for s6 overlay
-ARG OVERLAY_VERSION="v1.22.1.0"
+ARG OVERLAY_VERSION="v2.0.0.1"
 ARG OVERLAY_ARCH="arm"
 
 # environment variables
