@@ -59,6 +59,12 @@ COPY --from=rootfs-stage /root-out/ /
 ARG OVERLAY_VERSION="v2.1.0.2"
 ARG OVERLAY_ARCH="arm"
 
+# add s6 overlay
+ADD https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}-installer /tmp/
+RUN chmod +x /tmp/s6-overlay-${OVERLAY_ARCH}-installer && \
+/tmp/s6-overlay-${OVERLAY_ARCH}-installer / && \
+rm /tmp/s6-overlay-${OVERLAY_ARCH}-installer
+
 # environment variables
 ENV PS1="$(whoami)@$(hostname):$(pwd)\\$ " \
 HOME="/root" \
@@ -77,19 +83,12 @@ RUN \
 	shadow \
 	tzdata \
         libcap && \
- echo "------- s6 overlay -------" && \
- curl -o \
- /tmp/s6-overlay.tar.gz -L \
-	"https://github.com/just-containers/s6-overlay/releases/download/${OVERLAY_VERSION}/s6-overlay-${OVERLAY_ARCH}.tar.gz" && \
- tar xfz \
-	/tmp/s6-overlay.tar.gz -C / && \
- echo "------- create dnsx user and make folders -------" && \
+ echo "------- create dnsx user and make folder -------" && \
  groupmod -g 1000 users && \
  useradd -u 911 -U -d /config -s /bin/false dnsx && \
  usermod -G users dnsx && \
  mkdir -p \
-	/config \
-	/defaults && \
+	/config && \
  echo "------- qemu -------" && \
  curl -o \
  /usr/bin/qemu-arm-static -L \
