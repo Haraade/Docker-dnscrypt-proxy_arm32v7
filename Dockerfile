@@ -15,10 +15,10 @@ go build -ldflags="-s -w" -o $GOPATH/linux-arm/dnscrypt-proxy
 
 
 
-FROM alpine:3.10 as rootfs-stage
+FROM alpine:3.12 as rootfs-stage
 
 # environment
-ENV REL=v3.12
+ENV REL=v3.13
 ENV ARCH=armv7
 ENV MIRROR=http://dl-cdn.alpinelinux.org/alpine
 ENV PACKAGES=alpine-baselayout,\
@@ -56,7 +56,7 @@ COPY --from=Dnscrypt-proxy-builder /dnscrypt-proxy/linux-arm/ /usr/bin/
 COPY --from=rootfs-stage /root-out/ /
 
 # set version for s6 overlay
-ARG OVERLAY_VERSION="v2.1.0.2"
+ARG OVERLAY_VERSION="v2.2.0.1"
 ARG OVERLAY_ARCH="arm"
 
 # add s6 overlay
@@ -89,11 +89,6 @@ RUN \
  usermod -G users dnsx && \
  mkdir -p \
 	/config && \
- echo "------- qemu -------" && \
- curl -o \
- /usr/bin/qemu-arm-static -L \
-	"https://lsio-ci.ams3.digitaloceanspaces.com/qemu-arm-static" && \
- chmod +x /usr/bin/qemu-arm-static && \
  echo "------- cleanup -------" && \
  apk del --purge \
 	build-dependencies && \
