@@ -56,7 +56,7 @@ COPY --from=Dnscrypt-proxy-builder /dnscrypt-proxy/linux-arm/ /usr/bin/
 COPY --from=rootfs-stage /root-out/ /
 
 # set version for s6 overlay
-ARG OVERLAY_VERSION="v2.2.0.1"
+ARG OVERLAY_VERSION="v2.2.0.3"
 ARG OVERLAY_ARCH="arm"
 
 # add s6 overlay
